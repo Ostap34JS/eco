@@ -84,4 +84,31 @@ class AuthController extends BaseController
             'error' => 'Email or password is wrong.'
         ], 400);
     }
+
+    /**
+     * Register new user
+     *
+     * @param Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return mixed
+     */
+    public function register(Request $request)
+    {
+        $this->validate($this->request, [
+            'email' => 'required|email',
+            'name' => 'required|string|max:70',
+            'password' => 'required'
+        ]);
+
+        $user = new User;
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json([
+            'data' => $user
+        ], 200);
+    }
 }

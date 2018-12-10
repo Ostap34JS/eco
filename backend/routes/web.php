@@ -15,12 +15,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post(
-    'auth/login',
-    [
-        'uses' => 'AuthController@authenticate'
-    ]
-);
+$router->post('auth/login', 'AuthController@authenticate');
+
+$router->post('auth/register', 'AuthController@register');
+
 
 $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
     $router->get('users', function () {
